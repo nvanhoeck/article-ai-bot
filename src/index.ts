@@ -1,5 +1,7 @@
 import {createServer, IncomingMessage, ServerResponse} from "http";
 import {restAdapter} from "./adapters/restAdapter";
+import {fineTuneTrainingData, uploadTrainingData} from "./adapters/trainingDataAdapter";
+import {openai} from "./utils/openai";
 require('dotenv').config()
 
 const port = 8080
@@ -16,6 +18,20 @@ try {
         },
     )
     server.listen(port)
+    // Uncomment to run training
+    /*uploadTrainingData().then((id) => {
+        fineTuneTrainingData(id).then(() => {
+            console.log('fine tuning done for:' + id)
+        })
+    })
+
+    setInterval(() => {
+        openai.fineTuning.jobs.list({ limit: 1 }).then((page) => {
+            console.log('Running fine tune jobs: ' + JSON.stringify(page.data))
+        })
+    }, 5000)*/
+
+
 
 
 } catch (e) {
