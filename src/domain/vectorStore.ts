@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import {Assistant} from "./assistant";
 
-const pathToTestFile = path.join(__dirname, '../../assets/Filtered_10K.json');
+const pathToTestFile = path.join(__dirname, '../../assets/Training_Data.json');
 
 export const createVectorStoreFromFile = async (aiAssistantId: Assistant['id']) => {
     let file = fs.createReadStream(pathToTestFile);
