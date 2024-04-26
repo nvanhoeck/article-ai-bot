@@ -1,7 +1,7 @@
 import {createServer, IncomingMessage, ServerResponse} from "http";
 import {restAdapter} from "./adapters/restAdapter";
-import {fineTuneTrainingData, uploadTrainingData} from "./adapters/trainingDataAdapter";
-import {openai} from "./utils/openai";
+import {createVectorStoreFromFile} from "./domain/vectorStore";
+import {getAssistant} from "./domain/assistant";
 require('dotenv').config()
 
 const port = 8080
@@ -18,6 +18,16 @@ try {
         },
     )
     server.listen(port)
+    //Uncomment to add file to assistant
+    getAssistant().then(assistant => {
+        if(!assistant) throw new Error('Assistant has not been created')
+        createVectorStoreFromFile(assistant.id).then(() => {
+            console.log('Vector Store created with files')
+        })
+    })
+
+
+
     // Uncomment to run training
     /*uploadTrainingData().then((id) => {
         fineTuneTrainingData(id).then(() => {
